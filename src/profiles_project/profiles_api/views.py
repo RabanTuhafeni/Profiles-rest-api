@@ -1,11 +1,15 @@
 from django.shortcuts import render
 
+from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-
+from rest_framework.authentication import TokenAuthentication
+from rest_framework import filters
 
 from . import serializers
+from . import models
+from . import permissions
 # Create your views here.
 
 class HelloApiView(APIView):
@@ -38,3 +42,41 @@ class HelloApiView(APIView):
             return Response({'message':message})
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def put(self, request. pk=None):
+        ***Handles updating an object.***
+
+        return Responsse({'method':'put'})
+
+    def patch(self, request, pk=None):
+        ***Patch request, only updates fields provided in the request.***
+
+        return Response({'method':'patch'}):
+
+    def delete(self, request, pk=None):
+        ***Deletes an object.***
+
+        return Response({'method':'delete'})
+
+class HelloViewSet(viewsets, ViewSet):
+    ***Test API ViewSet. ***
+
+    def list(self, request):
+        ***Return a hello message.***
+
+        a_viewset =[
+        'Uses actions(list, create,  retrieve, update, partial_update)',
+        'Automatically maps to URLs using Routers',
+        'Provides more functionality with less code.'
+        ]
+
+        return Response({'message':'Hello!','a_viewset':a_viewset})
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    ***Hnadles creating, creating and updating profiles.***
+
+    serializer_class = serializers.UserProfileSerializer
+    queryset = models.UserProfile.objects.all()
+    authentication_classes = (TokenAuthentication,)
+    permission_classes =(permissions_UpdateOwnProfile,)
+    filter_backend = (filters_SearchFilter,)
+    search_fields = ('name', 'email',)
